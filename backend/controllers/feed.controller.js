@@ -4,9 +4,11 @@ const io = require('../socket')
 module.exports.createPost = async(req,res)=>{
     try{
         const{title,author,description} = req.body;
+        // console.log(req.body);
         
 
         const containsFeed = await Feed.findOne({$and : [{title : title},{author : author}]});
+        
 
         if(containsFeed){
           return  res.status(400).json({
@@ -20,6 +22,7 @@ module.exports.createPost = async(req,res)=>{
             description
         });
 
+        console.log(feed)
         const savedFeed = await feed.save();
 
         // to show new post has been added for different users
@@ -39,7 +42,8 @@ module.exports.createPost = async(req,res)=>{
     }
     catch(err){
         return res.status(500).json({
-            message : "Internal Server Error"
+            message : "Internal Server Error",
+            error : err
         })
     }
 }
@@ -95,8 +99,33 @@ module.exports.deletePost = async(req,res)=>{
 module.exports.editPost = async(req,res)=>{
     try{
 
+        const {id} = req.params;
+
+        const updatedFields = {};
+
+        const {title,author,description} = req.body;
+
+        if(title) updatedFields.title = title;
+        if(author) updatedFields.author = author;
+        if(description) updatedFields.description = description;
+
+        const updatedPost = await Feed.findByIdAndUpdate(id,updatedFields,{new : true});
+
+        io.getIO().emit('editedPost',{postId : updatedPost._id});
+
+
+
+        return res.status(200).json({
+            message : "post updated successfully",
+            post : updatedPost
+
+        })
+
     }
     catch(err){
-        
+        return res.status(500).json({
+            message : "Internal server Error",
+            error : err
+        })
     }
 }
