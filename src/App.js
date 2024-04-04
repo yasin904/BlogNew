@@ -1,25 +1,38 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import CreatePost from "./Components/createPost";
+import openSocket from 'socket.io-client'
+import   ShowPosts  from "./Components/ShowPosts";
 
-function App() {
+const App = ()=>{
+  useEffect(()=>{
+    const socket = openSocket('http://localhost:5000')
+    
+    socket.on("Feed",(data)=>{
+
+      console.log(data)
+    });
+    
+    socket.on("deleted",(data)=>{
+
+      console.log(data)
+
+    });
+    
+  },[])
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+ 
+    <div>
+    <CreatePost/>
+    <ShowPosts/>
     </div>
-  );
-}
+    
+    
+  )
 
+
+
+}
 export default App;
