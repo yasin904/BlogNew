@@ -87,9 +87,10 @@ const CreatePost = () => {
           ></input>
         </div>
        
-  <button onClick={onSubmitHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Submit</button>
-  <button onClick={onCancelHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Cancel</button>
-
+      </div>
+      <div className="flex flex-row gap-2 justify-center" >
+         <button onClick={onSubmitHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Submit</button>
+         <button onClick={onCancelHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Cancel</button>
       </div>
     </div>
   );
