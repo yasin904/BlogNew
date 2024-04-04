@@ -1,0 +1,29 @@
+const mongoose = require('mongoose')
+
+const FeedSchema = new mongoose.Schema({
+    title : {
+        type : String,
+        required : true
+    },
+    author : {
+        type : String,
+        required : true
+
+    },
+    description : {
+        type : Number,
+        required : true
+    },
+    img : {
+        type : String,
+        default : "https://picsum.photos/id/1/200/300"
+    }
+
+},
+{
+    timestamps : true
+})
+
+const Feed = mongoose.model("Feed",FeedSchema);
+
+module.exports = Feed
