@@ -76,13 +76,14 @@ module.exports.deletePost = async(req,res)=>{
 
         
 
-        const deletedPost = await Feed.findByIdAndDelete(id);
+         await Feed.findByIdAndDelete(id);
         
 
         // io.getIO().emit("postDeleted", { postId: deletedPost._id });
 
         return res.status(200).json({
-            message : "post deleted successfully"
+            message : "post deleted successfully",
+            
         })
 
 
