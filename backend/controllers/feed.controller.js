@@ -112,6 +112,8 @@ module.exports.editPost = async(req,res)=>{
 
         const updatedPost = await Feed.findByIdAndUpdate(id,updatedFields,{new : true});
 
+        
+
         io.getIO().emit('editedPost',{postId : updatedPost._id});
 
 
@@ -124,6 +126,7 @@ module.exports.editPost = async(req,res)=>{
 
     }
     catch(err){
+        console.error('Error updating post:', err);
         return res.status(500).json({
             message : "Internal server Error",
             error : err

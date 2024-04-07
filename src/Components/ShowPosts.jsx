@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useState } from 'react'
 import axios from 'axios'
-import socketIOClient from 'socket.io-client'
+import socketIOClient from 'socket.io-client';
+import EditModal from './editModal';
 
 const socket = socketIOClient('http://localhost:5000');
 
 const ShowPosts = () => {
-    const [posts, setPosts] = React.useState([]);
+    const [posts, setPosts] = useState([]);
+    const [editingPost,setEditingPost] = useState([null]);
+    const [showEditModal, setShowEditModal] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,11 +52,58 @@ const ShowPosts = () => {
             console.log(err)
         }
 
+
     }
+    const onEditHandler = (postId, post) => {
+        setEditingPost({ postId, ...post });
+        setShowEditModal(true); 
+    };
+
+    const onSubmitHandler = async (editedPost) => {
+
+        // if(!updatedPost.title || !updatedPost.author || !updatedPost.description){
+        //     alert("all fields are required");
+        //   return    
+        // }
+        try {
+            // Send a PUT request to your backend API to update the post
+            console.log(editedPost);
+
+            // const postData = {
+            //     title: updatedPost.title,
+            //     author: updatedPost.author,
+            //     description: updatedPost.description,
+            //     // Add other properties as needed
+            // };
+
+            const response = await axios.put(`http://localhost:5000/feed/edit/${editingPost.postId}`, {
+                title: editedPost.title,
+            author: editedPost.author,
+            description: editedPost.description,
+            // Add other properties as needed
+        });
+            
+            // Check if the request was successful
+            if (response.status === 200) {
+                // If successful, update the state with the updated post
+                setPosts(posts.map(post => (post._id === editingPost.postId ? response.data.post : post)));
+                // Close the edit modal
+                setShowEditModal(false);
+                // Reset the editingPost state
+                setEditingPost(null);
+            } else {
+                // Handle error if the request was not successful
+                console.error('Failed to update post:', response.data);
+            }
+        } catch (err) {
+            console.error('Error updating post:', err);
+        }
+    }
+    
 
     return (
         <div className='p-4  flex flex-col gap-2 bg-purple-500 text-white'>
-            <h2 className='text-2xl font-bold '>Posts</h2>
+            <h2 className='text-2xl font-bold  '>Posts</h2>
 
             {posts.length === 0 && <h4 className='text-xl font-bold'>No Posts to Show</h4>}
 
@@ -69,13 +119,20 @@ const ShowPosts = () => {
                     <p>{new Date(item.createdAt).toUTCString()}</p>
                     <div className=' flex gap-4'>
                     <button onClick={()=>onDeleteHandler(item._id)} className=' p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1'>Delete</button>
-                    <button className=' p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1'>Edit</button>
+                    <button onClick={()=>onEditHandler(item._id,item)} className=' p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1'>Edit</button>
                     </div>
                 </div>
             )}
 
         </div>
-        
+        {showEditModal && editingPost && (
+                <EditModal 
+                    editingPost={editingPost} 
+                    onSubmitHandler={(editedPost) => onSubmitHandler(editedPost)} 
+                    onCancel={() => setShowEditModal(false)} 
+                />
+            )}
+         
         </div>
     );
 }

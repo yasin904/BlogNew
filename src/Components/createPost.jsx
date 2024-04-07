@@ -8,7 +8,7 @@ const CreatePost = () => {
   const [title, setTitle] = React.useState('');
   const [author, setAuthor] = React.useState('');
   const [description, setDescription] = React.useState('');
-  const[errorMessage,setErrorMessage] = React.useState('');
+  
 
   const onSubmitHandler=async ()=>{
     console.log(title,author,description)
