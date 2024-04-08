@@ -133,3 +133,30 @@ module.exports.editPost = async(req,res)=>{
         })
     }
 }
+
+module.exports.viewPost = async(req,res)=>{
+    try{
+
+        const{id} = req.params;
+
+        const post = await Feed.findById(id);
+
+        if(!post){
+            return res.status(400).json({
+                message : "post does not exist"
+            })
+        }
+
+        return res.status(200).json({
+            message : "view post",
+            post : post
+        })
+    }
+    catch(err){
+        console.error('Error viewing post: ',err);
+        return res.status(500).json({
+            message : "Internal server error",
+            error : err
+        })
+    }
+}
