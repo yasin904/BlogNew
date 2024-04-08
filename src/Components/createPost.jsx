@@ -1,13 +1,16 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import axios from 'axios';
+import io from 'socket.io-client'
 
 
 
 
 const CreatePost = () => {
-  const [title, setTitle] = React.useState('');
-  const [author, setAuthor] = React.useState('');
-  const [description, setDescription] = React.useState('');
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [description, setDescription] = useState('');
+
+  const socket = io('http://localhost:5000');
   
 
   const onSubmitHandler=async ()=>{
@@ -17,6 +20,9 @@ const CreatePost = () => {
     return    
   }
 
+  
+
+  
   
 
   try{
@@ -35,6 +41,13 @@ const CreatePost = () => {
     console.log("post added successfully")
     console.log(res)
 
+    // socket.on("Feed",(res) =>{
+
+    //   alert("a new post has been created");
+
+    // })
+
+
    
 
   }catch(err){
@@ -42,11 +55,30 @@ const CreatePost = () => {
     console.log(err)
 
   }
+
+
+
   setTitle("");
   setAuthor("");
   setDescription("");
+
+ 
  
   }
+
+  useEffect(() => {
+    socket.on("Feed", ({ action, post, message }) => {
+      if (action === "Feed") {
+        // Display an alert for new post creation
+        alert(message);
+      }
+    });
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      socket.off("Feed");
+    };
+  }, []);
 
   const onCancelHandler = ()=>{
     if(title || author || description){
