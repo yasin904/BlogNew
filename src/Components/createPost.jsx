@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from "react";
 import axios from 'axios';
 import io from 'socket.io-client'
+import {useNavigate} from 'react-router-dom';
 
 
 
@@ -9,6 +10,7 @@ const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
+  const navigate = useNavigate();
 
   const socket = io('http://localhost:5000');
   
@@ -41,11 +43,7 @@ const CreatePost = () => {
     console.log("post added successfully")
     console.log(res)
 
-    // socket.on("Feed",(res) =>{
-
-    //   alert("a new post has been created");
-
-    // })
+    
 
 
    
@@ -87,6 +85,11 @@ const CreatePost = () => {
     setDescription("");
     }
   }
+
+  const onShowHandler = ()=>{
+    navigate(`/show`);
+
+  }
   return (
     <div className="bg-purple-200 p-8 rounded-xl border-[1px] border-black flex flex-col gap-8">
       <h3 className="text-2xl font-bold text-center">Create Post</h3>
@@ -109,7 +112,7 @@ const CreatePost = () => {
             onChange={(e)=>setAuthor(e.target.value)}
           ></input>
         </div>
-        <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
+        <div className="flex flex-col gap-2 col-span-2 md:col-span-1 overflow-y-auto">
           <label className="font-bold">Description</label>
           <input
             value={description}
@@ -124,6 +127,7 @@ const CreatePost = () => {
          <button onClick={onSubmitHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Submit</button>
          <button onClick={onCancelHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Cancel</button>
       </div>
+      <button onClick={onShowHandler} className="p-2 bg-black text-white rounded-md col-span-2">Go to Posts</button>
     </div>
   );
 };

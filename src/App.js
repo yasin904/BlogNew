@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import CreatePost from "./Components/createPost";
 import openSocket from 'socket.io-client'
 import   ShowPosts  from "./Components/ShowPosts";
+import { BrowserRouter as Router,Route,Routes } from "react-router-dom";
+import Viewing from "./Components/Viewing";
+
 
 const App = ()=>{
   useEffect(()=>{
@@ -24,10 +27,21 @@ const App = ()=>{
 
   return (
  
+    <Router>
     <div>
-    <CreatePost/>
-    <ShowPosts/>
+    
+    {/* <ShowPosts/>
+    <CreatePost/> */}
+    
+    <Routes>
+      <Route path="/" element={<CreatePost/>}/>
+        <Route path="/show" element={<ShowPosts/>}/>
+        <Route path="/post/:postId" element={<Viewing/>} />
+      </Routes>
+      
+  
     </div>
+     </Router>
     
     
   )
