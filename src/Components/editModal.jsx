@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 const EditModal = ({ editingPost, onSubmitHandler, onCancel }) => {
-    // Initialize state for edited post
+    
     const [editedPost, setEditedPost] = useState({
         title: editingPost.title || '',
         author: editingPost.author || '',
         description: editingPost.description || ''
     });
 
-    // Handle input change for title
+    
     const handleTitleChange = (e) => {
         setEditedPost({
             ...editedPost,
@@ -16,7 +16,7 @@ const EditModal = ({ editingPost, onSubmitHandler, onCancel }) => {
         });
     };
 
-    // Handle input change for author
+    
     const handleAuthorChange = (e) => {
         setEditedPost({
             ...editedPost,
@@ -24,7 +24,7 @@ const EditModal = ({ editingPost, onSubmitHandler, onCancel }) => {
         });
     };
 
-    // Handle input change for description
+    
     const handleDescriptionChange = (e) => {
         setEditedPost({
             ...editedPost,
