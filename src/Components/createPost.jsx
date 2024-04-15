@@ -127,8 +127,9 @@ const CreatePost = () => {
          <button onClick={onSubmitHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Submit</button>
          <button onClick={onCancelHandler} className="p-2 bg-black text-white rounded-md col-span-2 ">Cancel</button>
       </div>
-      <button onClick={onShowHandler} className="p-2 bg-black text-white rounded-md col-span-2">Go to Posts</button>
+      <button onClick={onShowHandler} className="p-2 bg-orange-200 text-black rounded-md col-span-2">Go to Posts</button>
     </div>
+    
   );
 };
 
