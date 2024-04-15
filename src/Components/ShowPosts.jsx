@@ -96,10 +96,10 @@ const ShowPosts = () => {
   
         try{
 
-            const response = await axios.get(`http://localhost:5000/feed/view/${postId}`);
-            console.log(response.data);
+            // const response = await axios.get(`http://localhost:5000/feed/view/${postId}`);
+            // console.log(response.data);
 
-            navigate(`/post/${postId}`,{state : response.data.post});
+            navigate(`/post/${postId}`);
             
         }
         catch(err){
@@ -119,7 +119,7 @@ const ShowPosts = () => {
 
             {posts.length === 0 && <h4 className='text-xl font-bold'>No Posts to Show</h4>}
 
-<div className=' flex flex-wrap gap-20'>
+<div   className=' flex flex-wrap gap-20'>
             {posts.map((item, i) =>
                 <div key={i} className='border-2 bg-white text-black p-2 rounded-xl m-auto w-[400px]'>
                     <div className='h-80'>
