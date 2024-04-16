@@ -160,3 +160,62 @@ module.exports.viewPost = async(req,res)=>{
         })
     }
 }
+module.exports.searchResult = async(req,res)=>{
+    try{
+        const query = req.query['q'];
+
+        if (!query) {
+            return res.status(400).json({ message: "Please type a search query" });
+        }
+
+        console.log(query)
+        
+
+        // if (!query || typeof query !== 'string') {
+        //     return res.status(400).json({
+        //         message: "Invalid query parameter"
+        //     });
+        // }
+
+        // if (typeof query !== 'string') {
+        //     query = String(query);
+        //     console.log(query);
+        // }
+        
+
+        
+
+            
+            const posts = await Feed.find({
+                $or:[
+                    {title : {$regex : query,$options : 'i'}},
+                    {author : {$regex : query,$options : 'i'}}
+
+
+                ]
+            });
+
+            
+
+            if (posts.length === 0) {
+                return res.status(401).json({
+                    message: "No match found"
+                });
+            }
+    
+            return res.status(200).json({
+                message: "Matches found",
+                data: posts
+            });
+
+        }
+
+    
+    catch(err){
+        console.log(err);
+        return res.status(500).json({
+            message : "Internal server error",
+            error : err
+        })
+    }
+}
