@@ -162,7 +162,9 @@ module.exports.viewPost = async(req,res)=>{
 }
 module.exports.searchResult = async(req,res)=>{
     try{
-        const query = req.query['q'];
+        let query = req.query['q'];
+
+        query = query.trim();
 
         if (!query) {
             return res.status(400).json({ message: "Please type a search query" });
