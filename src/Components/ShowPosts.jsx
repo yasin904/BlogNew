@@ -12,6 +12,9 @@ const ShowPosts = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
+    const [searchTimeout,setSearchTimeout] = useState(null);
+    const [noPostsMessage, setNoPostsMessage] = useState('');
+    const DEBOUNCE_DELAY = 300;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,7 +32,7 @@ const ShowPosts = () => {
             setPosts(posts.filter(post => post._id !== deletedPostId));
         });
 
-        // Clean up Socket.IO connection
+        
         return () => {
             socket.disconnect();
         };
@@ -74,12 +77,33 @@ const ShowPosts = () => {
     };
 
     const onSearchHandler = async (e) => {
-        setSearchQuery(e.target.value);
-        try {
-            const response = await axios.get(`http://localhost:5000/feed/search?q=${e.target.value}`);
-            setSearchResults(response.data.data);
-        } catch (err) {
-            console.error('Error searching:', err);
+
+        const searchText = e.target.value;
+        setSearchQuery(searchText);
+
+        if(searchTimeout){
+            clearTimeout(searchTimeout);
+        }
+        setSearchTimeout(setTimeout(async()=>{
+            try {
+                const response = await axios.get(`http://localhost:5000/feed/search?q=${searchText}`);
+                if (response.status === 400 || response.status === 401) {
+                    setSearchResults([]);
+                    setNoPostsMessage('No posts matching your search criteria.');
+                } else {
+                    setSearchResults(response.data.data);
+                    setNoPostsMessage(''); // Clear message when posts are found
+                }
+            } catch (err) {
+                console.error('Error searching:', err);
+            setSearchResults([]);
+            setNoPostsMessage('No matching posts found.');
+            }
+
+        },DEBOUNCE_DELAY));
+
+        if (!searchText.trim()) {
+            setSearchResults([]);
         }
     };
 
@@ -113,11 +137,11 @@ const ShowPosts = () => {
                 />
             </div>
             <div className='flex flex-row gap-2 justify-center'>
-                <button className='p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1' onClick={onSearchHandler}>Search</button>
+                <button className='p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1' onClick={()=>onSearchHandler}>Search</button>
             </div>
             <h2 className='text-2xl font-bold'>Posts</h2>
 
-            {posts.length === 0 && <h4 className='text-xl font-bold'>No Posts to Show</h4>}
+            {posts.length === 0 && <h4 className='text-xl font-bold'>{noPostsMessage}</h4>}
 
             <div className='flex flex-wrap gap-20'>
                 {posts.map((item, i) => (
