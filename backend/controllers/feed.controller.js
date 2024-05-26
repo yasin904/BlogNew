@@ -4,7 +4,7 @@ const io = require('../socket')
 module.exports.createPost = async(req,res)=>{
     try{
         const{title,author,description} = req.body;
-        // console.log(req.body);
+        
         
 
         const containsFeed = await Feed.findOne({$and : [{title : title},{author : author}]});
