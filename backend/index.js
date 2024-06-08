@@ -15,12 +15,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 
 
 
-app.get('/',(_req,res)=>{
-    console.log("Hello World")
-    return res.status(200).json({
-        message : "Hello World"
-    })
-});
+ 
 
 
 
