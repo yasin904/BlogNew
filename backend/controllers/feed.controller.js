@@ -100,17 +100,40 @@ module.exports.deletePost = async(req,res)=>{
 module.exports.editPost = async(req,res)=>{
     try{
 
+        
         const {id} = req.params;
+
+
 
         const updatedFields = {};
 
         const {title,author,description} = req.body;
 
+        const post = await Feed.findById(id);
+
+        if(!post){
+            return res.status(404).json({
+                message : "no post found"
+            })
+        }
+
+        if(post.editCount >=3){
+            return res.status(403).json({
+                message : "post cannot be updated more than 3 times"
+            });
+        }
+
+
+
         if(title) updatedFields.title = title;
         if(author) updatedFields.author = author;
         if(description) updatedFields.description = description;
 
+        updatedFields.editCount = post.editCount + 1;
+
         const updatedPost = await Feed.findByIdAndUpdate(id,updatedFields,{new : true});
+
+    
 
         
 
@@ -123,6 +146,8 @@ module.exports.editPost = async(req,res)=>{
             post : updatedPost
 
         })
+
+
 
     }
     catch(err){

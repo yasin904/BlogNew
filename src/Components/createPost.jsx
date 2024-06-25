@@ -12,7 +12,7 @@ const CreatePost = () => {
   const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
-  const socket = io('http://localhost:5000');
+  const socket = io('http://localhost:5001');
   
 
   const onSubmitHandler=async ()=>{
@@ -29,7 +29,7 @@ const CreatePost = () => {
 
   try{
 
-    const res = await axios.post("http://localhost:5000/feed/create",{
+    const res = await axios.post("http://localhost:5001/feed/create",{
       title,
       author,
       description

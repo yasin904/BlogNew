@@ -17,6 +17,10 @@ const FeedSchema = new mongoose.Schema({
     img : {
         type : String,
         default : "https://picsum.photos/id/1/200/300"
+    },
+    editCount : {
+        type : Number,
+        default : 0
     }
 
 },

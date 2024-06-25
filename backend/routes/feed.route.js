@@ -10,4 +10,5 @@ router.put('/edit/:id',feedController.editPost);
 router.get('/view/:id',feedController.viewPost);
 router.get('/search',feedController.searchResult);
 
+
 module.exports = router;

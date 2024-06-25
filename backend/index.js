@@ -15,12 +15,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 
 
 
-app.get('/',(_req,res)=>{
-    console.log("Hello World")
-    return res.status(200).json({
-        message : "Hello World"
-    })
-});
+ 
 
 
 
@@ -29,8 +24,8 @@ app.use('/feed',feedRoutes);
 mongoose
 .connect("mongodb://localhost:27017/blog")
 .then(()=>{
-    const server = app.listen(5000,()=>{
-        console.log("Server is running on port 5000")
+    const server = app.listen(5001,()=>{
+        console.log("Server is running on port 5001")
     });
 
 
