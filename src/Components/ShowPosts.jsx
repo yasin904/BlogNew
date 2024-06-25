@@ -4,7 +4,7 @@ import socketIOClient from 'socket.io-client';
 import EditModal from './editModal';
 import { useNavigate } from 'react-router-dom';
 
-const socket = socketIOClient('http://localhost:5000');
+const socket = socketIOClient('http://localhost:5001');
 
 const ShowPosts = () => {
     const [posts, setPosts] = useState([]);
@@ -20,7 +20,7 @@ const ShowPosts = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/feed/get");
+                const res = await axios.get("http://localhost:5001/feed/get");
                 setPosts(res.data.feed);
             } catch (err) {
                 console.log(err);
@@ -40,7 +40,7 @@ const ShowPosts = () => {
 
     const onDeleteHandler = async (postId) => {
         try {
-            await axios.delete(`http://localhost:5000/feed/delete/${postId}`);
+            await axios.delete(`http://localhost:5001/feed/delete/${postId}`);
             setPosts(posts.filter(post => post._id !== postId));
             socket.emit('deletePost', postId);
         } catch (err) {
@@ -55,7 +55,7 @@ const ShowPosts = () => {
 
     const onSubmitHandler = async (editedPost) => {
         try {
-            const response = await axios.put(`http://localhost:5000/feed/edit/${editingPost.postId}`, {
+            const response = await axios.put(`http://localhost:5001/feed/edit/${editingPost.postId}`, {
                 title: editedPost.title,
                 author: editedPost.author,
                 description: editedPost.description
@@ -86,7 +86,7 @@ const ShowPosts = () => {
         }
         setSearchTimeout(setTimeout(async()=>{
             try {
-                const response = await axios.get(`http://localhost:5000/feed/search?q=${searchText}`);
+                const response = await axios.get(`http://localhost:5001/feed/search?q=${searchText}`);
                 if (response.status === 400 || response.status === 401) {
                     setSearchResults([]);
                     setNoPostsMessage('No posts matching your search criteria.');
@@ -115,7 +115,7 @@ const ShowPosts = () => {
             // Fetch all posts if search query is empty
             const fetchData = async () => {
                 try {
-                    const res = await axios.get("http://localhost:5000/feed/get");
+                    const res = await axios.get("http://localhost:5001/feed/get");
                     setPosts(res.data.feed);
                 } catch (err) {
                     console.log(err);

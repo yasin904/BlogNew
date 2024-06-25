@@ -12,7 +12,7 @@ const Viewing = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/feed/view/${postId}`);
+                const response = await axios.get(`http://localhost:5001/feed/view/${postId}`);
                 setPost(response.data.post);
             } catch (error) {
                 setError(error.message);
