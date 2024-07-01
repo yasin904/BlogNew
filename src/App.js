@@ -8,7 +8,7 @@ import Viewing from "./Components/Viewing";
 
 const App = ()=>{
   useEffect(()=>{
-    const socket = openSocket('http://localhost:5000')
+    const socket = openSocket('http://localhost:5001')
     
     socket.on("Feed",(data)=>{
 
