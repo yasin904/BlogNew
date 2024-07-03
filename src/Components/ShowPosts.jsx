@@ -155,7 +155,14 @@ const ShowPosts = () => {
                         <p>{new Date(item.createdAt).toUTCString()}</p>
                         <div className='flex gap-4'>
                             <button onClick={() => onDeleteHandler(item._id)} className='p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1'>Delete</button>
-                            <button onClick={() => onEditHandler(item._id, item)} className='p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1'>Edit</button>
+                            <button
+    disabled={item?.editCount >= 3}
+    onClick={() => onEditHandler(item._id, item)}
+    className={`p-2 text-white rounded-md col-span-2 space-x-1 ${item?.editCount >= 3 ? 'bg-gray-400 cursor-not-allowed' : 'bg-red-400 cursor-pointer'}`}
+>
+    Edit
+</button>
+
                             <button onClick={() => onViewHandler(item._id)} className='p-2 bg-red-400 text-white rounded-md col-span-2 space-x-1'>View</button>
                         </div>
                     </div>
