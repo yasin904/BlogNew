@@ -3,7 +3,7 @@ import CreatePost from "./Components/createPost";
 import openSocket from 'socket.io-client'
 import   ShowPosts  from "./Components/ShowPosts";
 import { BrowserRouter as Router,Route,Routes } from "react-router-dom";
-import Viewing from "./Components/Viewing";
+import ViewPosts from "./Components/ViewPosts";
 
 
 const App = ()=>{
@@ -36,7 +36,7 @@ const App = ()=>{
     <Routes>
       <Route path="/" element={<CreatePost/>}/>
         <Route path="/show" element={<ShowPosts/>}/>
-        <Route path="/post/:postId" element={<Viewing/>} />
+        <Route path="/post/:postId" element={<ViewPosts/>} />
       </Routes>
       
   
