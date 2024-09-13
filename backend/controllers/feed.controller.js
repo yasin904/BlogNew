@@ -117,6 +117,13 @@ module.exports.editPost = async(req,res)=>{
             })
         }
 
+        const ninetyDaysAgo = new Date()
+        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+        if(post.lastEditDate<ninetyDaysAgo){
+            post.editCount = 0;
+
+        }
         if(post.editCount >=3){
             return res.status(403).json({
                 message : "post cannot be updated more than 3 times"

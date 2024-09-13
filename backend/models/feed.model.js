@@ -20,7 +20,11 @@ const FeedSchema = new mongoose.Schema({
     },
     editCount : {
         type : Number,
-        default : 0
+        default : 0,
+    },
+    lastEditDate : {
+        type : Date,
+        Default : Date.now,
     }
 
 },
